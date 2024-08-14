@@ -1,3 +1,4 @@
+
 class ConsoleInterface:
     def get_user_input(self) -> str:
         return input("Enter command: ")

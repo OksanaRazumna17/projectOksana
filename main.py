@@ -1,16 +1,16 @@
 from db.connection import DatabaseConnection
 from db.queries import MovieQueries
 
-
 def print_results(results):
+    """Выводит результаты запроса в консоль."""
     if results:
         for result in results:
             print(result)
     else:
         print("No results found.")
 
-
 def main():
+    """Основная логика программы."""
     # Подключаемся к базе данных sakila для выполнения запросов
     db_conn = DatabaseConnection(
         host="ich-db.ccegls0svc9m.eu-central-1.rds.amazonaws.com",
@@ -18,10 +18,12 @@ def main():
         passwd="password",
         database="sakila"
     )
-    connection = db_conn.connect()
-    queries = MovieQueries(connection)
 
     try:
+        # Устанавливаем соединение
+        connection = db_conn.connect()
+        queries = MovieQueries(connection)
+
         while True:
             # Ввод команды
             print("\nAvailable commands:")
@@ -46,12 +48,15 @@ def main():
                 print_results(results)
             else:
                 print("Unknown command. Please try again.")
+    except Exception as e:
+        print(f"An error occurred: {e}")
     finally:
-        db_conn.close()  # Закрываем соединение с базой данных
-
+        # Закрываем соединение с базой данных
+        db_conn.close()
 
 if __name__ == "__main__":
     main()
+
 
 
 
