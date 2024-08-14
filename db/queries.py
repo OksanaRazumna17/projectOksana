@@ -11,10 +11,10 @@ class MovieQueries:
     def get_popular_movies(self):
         cursor = self.connection.cursor()
         query = """
-        SELECT title, COUNT(*) as popularity 
-        FROM film 
-        GROUP BY title 
-        ORDER BY popularity DESC 
+        SELECT title, COUNT(*) as popularity
+        FROM film
+        GROUP BY title
+        ORDER BY popularity DESC
         LIMIT 10
         """
         cursor.execute(query)
@@ -23,10 +23,10 @@ class MovieQueries:
     def get_popular_queries(self):
         cursor = self.connection.cursor()
         query = """
-        SELECT query, COUNT(*) as count 
-        FROM 310524ptm_oksana.search_log 
-        GROUP BY query 
-        ORDER BY count DESC 
+        SELECT query, COUNT(*) as count
+        FROM 310524ptm_oksana.search_log
+        GROUP BY query
+        ORDER BY count DESC
         LIMIT 5
         """
         cursor.execute(query)
@@ -37,6 +37,7 @@ class MovieQueries:
         insert_query = "INSERT INTO 310524ptm_oksana.search_log (query) VALUES (%s)"
         cursor.execute(insert_query, (query,))
         self.connection.commit()
+
 
 
 

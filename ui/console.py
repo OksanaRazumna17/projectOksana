@@ -8,9 +8,21 @@ class ConsoleInterface:
             for result in results:
                 print(result[0])
         else:
-            print("Фільми не знайдені.")
+            print("Фильмы не найдены.")
 
     def display_popular_queries(self, queries):
-        print("Популярні запити:")
+        print("Популярные запросы:")
         for query in queries:
-            print(f"{query[0]} - {query[1]} запитів")
+            print(f"{query[0]} - {query[1]} запросов")
+
+    def display_help(self):
+        """Выводит список доступных команд."""
+        print("\nAvailable commands:")
+        print("1. search <ключевое слово> - Поиск фильмов по ключевому слову.")
+        print("2. popular_movies - Вывод 10 самых популярных фильмов.")
+        print("3. popular_queries - Вывод 5 наиболее популярных запросов.")
+        print("4. exit - Выход из программы.")
+
+    def display_message(self, message):
+        """Выводит сообщение в консоль."""
+        print(message)

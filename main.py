@@ -1,13 +1,6 @@
 from db.connection import DatabaseConnection
 from db.queries import MovieQueries
-
-def print_results(results):
-    """Выводит результаты запроса в консоль."""
-    if results:
-        for result in results:
-            print(result)
-    else:
-        print("No results found.")
+from ui.console import ConsoleInterface
 
 def main():
     """Основная логика программы."""
@@ -19,19 +12,17 @@ def main():
         database="sakila"
     )
 
+    console = ConsoleInterface()
+
     try:
         # Устанавливаем соединение
         connection = db_conn.connect()
         queries = MovieQueries(connection)
 
         while True:
-            # Ввод команды
-            print("\nAvailable commands:")
-            print("1. search <ключевое слово> - Поиск фильмов по ключевому слову.")
-            print("2. popular_movies - Вывод 10 самых популярных фильмов.")
-            print("3. popular_queries - Вывод 5 наиболее популярных запросов.")
-            print("4. exit - Выход из программы.")
-            command = input("Enter command: ")
+            # Показать доступные команды перед вводом новой команды
+            console.display_help()
+            command = console.get_user_input()
 
             if command == "exit":
                 break
@@ -39,17 +30,17 @@ def main():
                 keyword = command.split("search ", 1)[1]
                 results = queries.search_movies_by_keyword(keyword)
                 queries.log_search_query(keyword)  # Записываем запрос в другую базу данных
-                print_results(results)
+                console.display_results(results)
             elif command == "popular_movies":
                 results = queries.get_popular_movies()
-                print_results(results)
+                console.display_results(results)
             elif command == "popular_queries":
                 results = queries.get_popular_queries()
-                print_results(results)
+                console.display_popular_queries(results)
             else:
-                print("Unknown command. Please try again.")
+                console.display_message("Unknown command. Please try again.")
     except Exception as e:
-        print(f"An error occurred: {e}")
+        console.display_message(f"An error occurred: {e}")
     finally:
         # Закрываем соединение с базой данных
         db_conn.close()
