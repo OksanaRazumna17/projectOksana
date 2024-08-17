@@ -1,7 +1,11 @@
 from db.connection import DatabaseConnection
 from db.queries import MovieQueries
 from ui.console import ConsoleInterface
-
+# Общий процесс:
+# Откройте терминал или командную строку.
+# Перейдите в директорию проекта с помощью команды cd.
+# Запустите программу командой python main.py.
+# Взаимодействуйте с программой через консольный интерфейс.
 def main():
     """Основная логика программы."""
     # Подключаемся к базе данных sakila для выполнения запросов
