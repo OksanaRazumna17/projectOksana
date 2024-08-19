@@ -2,41 +2,39 @@ class MovieQueries:
     def __init__(self, connection):
         self.connection = connection
 
-    def search_movies_by_keyword(self, keyword: str):
+    def search_movies_by_keyword(self, keyword):
         cursor = self.connection.cursor()
-        query = "SELECT title FROM film WHERE title LIKE %s LIMIT 10"
-        cursor.execute(query, ('%' + keyword + '%',))
-        return cursor.fetchall()
+        query = f"SELECT title FROM film WHERE title LIKE '%{keyword}%'"
+        cursor.execute(query)
+        results = cursor.fetchall()
+        return results
 
     def get_popular_movies(self):
         cursor = self.connection.cursor()
-        query = """
-        SELECT title, COUNT(*) as popularity
-        FROM film
-        GROUP BY title
-        ORDER BY popularity DESC
-        LIMIT 10
-        """
+        query = "SELECT title FROM film ORDER BY rental_rate DESC LIMIT 10"
         cursor.execute(query)
-        return cursor.fetchall()
+        results = cursor.fetchall()
+        return results
 
     def get_popular_queries(self):
-        cursor = self.connection.cursor()
-        query = """
-        SELECT query, COUNT(*) as count
-        FROM 310524ptm_oksana.search_log
-        GROUP BY query
-        ORDER BY count DESC
-        LIMIT 5
-        """
-        cursor.execute(query)
-        return cursor.fetchall()
+        query_count = {}
+        try:
+            with open('search_logs.txt', 'r') as f:
+                for line in f:
+                    keyword = line.strip().replace("Search keyword: ", "")
+                    if keyword in query_count:
+                        query_count[keyword] += 1
+                    else:
+                        query_count[keyword] = 1
+        except FileNotFoundError:
+            return ["No logs found."]
 
-    def log_search_query(self, query: str):
-        cursor = self.connection.cursor()
-        insert_query = "INSERT INTO 310524ptm_oksana.search_log (query) VALUES (%s)"
-        cursor.execute(insert_query, (query,))
-        self.connection.commit()
+        # Сортировка по частоте использования и выборка топ-5
+        sorted_queries = sorted(query_count.items(), key=lambda item: item[1], reverse=True)
+        top_queries = sorted_queries[:5]
+        return top_queries
+
+
 
 
 
