@@ -1,7 +1,13 @@
+#1.cd C:\Users\oksus\PycharmProjects\pythonProject6\projectOksana
+#2. python main.py
+#3.При нажатии на 1 предлагаеться ввести слово для поиска, после введения происходит поиск по ключевому слову
+#4 Нажать на 2 отображаються  10 топ популярных фильмов
+#5 Нажать 3 отображаються 5 наиболее популярных запросов.
+#6 Нажать 4 и выйти из программы
+
 from db.connection import DatabaseConnection
 from db.queries import MovieQueries
 from ui.console import ConsoleInterface
-
 
 def main():
     """Основная логика программы."""
@@ -22,16 +28,16 @@ def main():
             console.display_help()
             command = console.get_user_input()
 
-            if command == "exit":
+            if command == "4":
                 break
-            elif command.startswith("search "):
-                keyword = command.split("search ", 1)[1]
+            elif command == "1":
+                keyword = input("Enter a keyword for search: ")
                 results = queries.search_movies_by_keyword(keyword)
                 console.display_results(results)
-            elif command == "popular_movies":
+            elif command == "2":
                 results = queries.get_popular_movies()
                 console.display_results(results)
-            elif command == "popular_queries":
+            elif command == "3":
                 results = queries.get_popular_queries()
                 console.display_popular_queries(results)
             else:
@@ -43,8 +49,6 @@ def main():
 
 if __name__ == "__main__":
     main()
-
-
 
 
 

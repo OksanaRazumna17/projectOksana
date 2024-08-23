@@ -31,3 +31,5 @@ class ConsoleInterface:
         """Выводит сообщение в консоль."""
         print(message)
 
+
+

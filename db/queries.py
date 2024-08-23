@@ -17,22 +17,24 @@ class MovieQueries:
         return results
 
     def get_popular_queries(self):
-        query_count = {}
-        try:
-            with open('search_logs.txt', 'r') as f:
-                for line in f:
-                    keyword = line.strip().replace("Search keyword: ", "")
-                    if keyword in query_count:
-                        query_count[keyword] += 1
-                    else:
-                        query_count[keyword] = 1
-        except FileNotFoundError:
-            return ["No logs found."]
+        query_counts = {}
 
-        # Сортировка по частоте использования и выборка топ-5
-        sorted_queries = sorted(query_count.items(), key=lambda item: item[1], reverse=True)
-        top_queries = sorted_queries[:5]
-        return top_queries
+        # Открываем файл логов и читаем его построчно
+        with open('search_logs.txt', 'r') as f:
+            for line in f:
+                # Разбираем строку лога, чтобы извлечь ключевое слово
+                if "Search keyword:" in line:
+                    keyword = line.replace("Search keyword:", "").strip()
+                    if keyword in query_counts:
+                        query_counts[keyword] += 1
+                    else:
+                        query_counts[keyword] = 1
+
+        # Сортируем запросы по частоте и возвращаем список
+        sorted_queries = sorted(query_counts.items(), key=lambda item: item[1], reverse=True)
+        return sorted_queries
+
+
 
 
 

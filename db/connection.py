@@ -13,7 +13,8 @@ class DatabaseConnection:
             host=self.host,
             user=self.user,
             passwd=self.passwd,
-            database=self.database
+            database=self.database,
+            connection_timeout=600  # Установка таймаута соединения на 10 минут
         )
         print("Connection established")
         return self.connection
@@ -22,5 +23,7 @@ class DatabaseConnection:
         if self.connection:
             self.connection.close()
             print("Connection closed")
+
+
 
 
